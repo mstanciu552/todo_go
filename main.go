@@ -1,44 +1,54 @@
 package main
 
 import (
-  "fmt"
-  "github.com/mstanciu552/todo_go/todo"
-  "os"
+	"fmt"
+	"github.com/mstanciu552/todo_go/todo"
+	"os"
 )
 
 func main() {
-  args := os.Args[1:]
-  todo.Init()
+	args := os.Args[1:]
+	todo.Init()
 
-  if len(args) == 0 {
-    todo.ShowAll()
-    return
-  }
+	if len(args) == 0 {
+		todo.ShowAll()
+		return
+	}
 
-  switch args[0] {
+	switch args[0] {
 
-  case "show":
-    todo.ShowAll()
+	case "clear":
+		todo.ClearDB()
 
-  case "add":
-    todo.Add(args[1])
+	case "show":
+		todo.ShowAll()
 
-  case "delete":
-    if len(args) == 1 {
-      todo.Delete(args[1])
-    } else {
-      fmt.Println("Id needed")
-    }
+	case "add":
+		if args[1] != "" {
+			todo.Add(args[1]) // title
+		} else {
+			fmt.Println("Id needed")
+		}
 
-  case "done":
-    if len(args) == 1 {
-      todo.Done(args[1])
-    } else {
-      fmt.Println("Id needed")
-    }
+  case "due":
+    todo.Due(args[1], args[2])
 
-  default:
-    todo.ShowAll()
+	case "delete":
+		if args[1] != "" {
+			todo.Delete(args[1]) // id
+		} else {
+			fmt.Println("Id needed")
+		}
 
-  }
+	case "done":
+		if args[1] != "" {
+			todo.Done(args[1]) // id
+		} else {
+			fmt.Println("Id needed")
+		}
+
+	default:
+		todo.ShowAll()
+
+	}
 }
