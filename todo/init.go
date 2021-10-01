@@ -2,6 +2,7 @@ package todo
 
 import (
   "fmt"
+  "time"
   "gorm.io/gorm"
   "gorm.io/driver/sqlite"
 )
@@ -10,36 +11,40 @@ type Todo struct {
   gorm.Model  
   Title string
   Done  bool
-  Due   string
+  Due   time.Time
 }
 
-func Init() {
+func Init() *gorm.DB {
   db, err := gorm.Open(sqlite.Open("todo.db"), &gorm.Config{})
   if err != nil {
     panic("Database Error")
   }
 
   db.AutoMigrate(&Todo{})
-
-  // db.Create(&Todo{Title: "test2", Done: false, Due: "date"})
-
-  var todo Todo
-  db.First(&todo, "title = ?", "test2")
-  fmt.Println(todo)
+  return db
 }
 
+// TODO Add better show format
 func ShowAll() {
-  fmt.Println("Todo")
+  db := Init()
+  var todos []Todo
+
+  db.Find(&todos)
+
+  fmt.Println(todos)
 }
 
-func Add() {
-  fmt.Println("Add")
+func Add(title string) {
+  db := Init()
+  db.Create(&Todo{Title: title, Done: false, Due: time.Now()})
 }
 
 func Delete(id string) {
   fmt.Println("Delete", id)
+  // db := Init()
 }
 
 func Done(id string) {
   fmt.Println("Done", id)
+  // db := Init()
 }

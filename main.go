@@ -15,24 +15,24 @@ func main() {
     return
   }
 
-  switch args[1] {
+  switch args[0] {
 
   case "show":
     todo.ShowAll()
 
   case "add":
-    todo.Add()
+    todo.Add(args[1])
 
   case "delete":
     if len(args) == 1 {
-      todo.Delete(args[2])
+      todo.Delete(args[1])
     } else {
       fmt.Println("Id needed")
     }
 
   case "done":
     if len(args) == 1 {
-      todo.Done(args[2])
+      todo.Done(args[1])
     } else {
       fmt.Println("Id needed")
     }
